@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Books</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <div>Books</div>
+    <button class="add">New book</button>
+    <div class="add-modal">
+        <div class="add-modal-content">
+          <span class="close">&times;</span>
+          <form>
+	    		<ul>
+    				<li>
+					    <label for="title">Title:</label>
+				    	<input type="text" id="title" name="title" />
+			    	</li>
+		    		<li>
+	    				<label for="author">Author:</label>
+    					<input type="text" id="author" name="author" />
+				    </li>
+                    <li>
+	    				<label for="author">Pages:</label>
+    					<input type="number" id="pages" name="pages" />
+				    </li>
+                    <li>
+	    				<label for="read">Read:</label>
+    					<input type="boolean" id="read" name="read" />
+				    </li>
+				    <li class="button">
+					    <button type="submit">Add</button>
+				    </li>
+			    </ul>
+		    </form>
+        </div>
+    </div>
+    <ul class="book-cards">
+    </ul>
+    <script src="main.js"></script>
+</body>
+</html>
