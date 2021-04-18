@@ -11,8 +11,8 @@
     <button class="add">New book</button>
     <div class="add-modal">
         <div class="add-modal-content">
-          <span class="close">&times;</span>
-          <form>
+        	<span class="close">&times;</span>
+        	<form id="add-book">
 	    		<ul>
     				<li>
 					    <label for="title">Title:</label>
@@ -28,10 +28,10 @@
 				    </li>
                     <li>
 	    				<label for="read">Read:</label>
-    					<input type="boolean" id="read" name="read" />
+    					<input type="checkbox" id="read" name="read" />
 				    </li>
 				    <li class="button">
-					    <button type="submit">Add</button>
+					    <button type="submit">Add book</button>
 				    </li>
 			    </ul>
 		    </form>

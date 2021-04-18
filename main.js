@@ -2,6 +2,7 @@ const bookCards = document.getElementsByClassName('book-cards')[0]
 const addBookButton = document.getElementsByClassName("add")[0]
 const addModal = document.getElementsByClassName('add-modal')[0]
 const closeAddModalButton = document.getElementsByClassName("close")[0]
+const addBookForm = document.getElementById('add-book')
 const library = []
 library.books = []
 
@@ -24,6 +25,7 @@ const Book = (props) => {
 const addBookToLibrary = (book) => library.books.push(book)
 
 const displayBooks = (books) => {
+    bookCards.innerHTML = ''
     books.forEach(book => {
         let li = document.createElement('li')
         li.setAttribute('class', 'book-card')
@@ -67,6 +69,18 @@ window.onclick = (event) => {
         addModal.style.display = "none";
     }
 }
+
+addBookForm.addEventListener('submit', e => {
+    const temp = {}
+    temp.title = e.target[0].value
+    temp.author = e.target[1].value
+    temp.pages = e.target[2].value
+    temp.read = e.target[3].checked
+    addBookToLibrary(Book(temp))
+    addModal.style.display = "none";
+    displayBooks(library.books)
+    e.preventDefault()
+})
 
 addBookToLibrary(firstBook)
 addBookToLibrary(secondBook)
