@@ -1,3 +1,43 @@
+body {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    margin: 0;
+    background-color: rgb(201, 201, 201);
+}
+
+header {
+    color: seashell;
+    padding: 0.5em;
+    font-weight: bold;
+    font-size: 3em;
+    text-align: left;
+    background-color:rgb(0, 0, 0);
+}
+
+.add {
+    color: seashell;
+    font-size: 50px;
+    font-weight:bolder;
+    text-align: center;
+    margin: 20px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    line-height: 40px;
+    background-color:forestgreen;
+    border: none;
+}
+
+.add:hover {
+    font-size: 60px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: 15px;
+    width: 60px;
+    height: 60px;
+    line-height: 50px;
+    background-color:forestgreen;
+}
+
 .book-cards {
     display: flex;
     flex-flow: row wrap;
@@ -79,7 +119,6 @@ label {
 
 input,
 textarea {
-    font: 1em sans-serif;
     width: 300px;
     box-sizing: border-box;
     border: 1px solid #999;
