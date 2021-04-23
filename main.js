@@ -1,7 +1,10 @@
-const bookCards = document.getElementsByClassName('book-cards')[0]
-const addBookButton = document.getElementsByClassName("add")[0]
+const bookCards = Array.from(document.getElementsByClassName('book-card'))
+const unReadBooks = document.getElementById('list1')
+const readBooks = document.getElementById('list2')
+const addUnReadBookButton = document.getElementById('add1')
+const addReadBookButton = document.getElementById('add2')
 const addModal = document.getElementsByClassName('add-modal')[0]
-const closeAddModalButton = document.getElementsByClassName("close")[0]
+const closeAddModalButton = document.getElementsByClassName('close')[0]
 const addBookForm = document.getElementById('add-book')
 const library = []
 library.books = []
@@ -24,22 +27,30 @@ const Book = (props) => {
 
 const addBookToLibrary = (book) => library.books.push(book)
 
-const displayBooks = (books) => {
-    bookCards.innerHTML = ''
+const updateLists = (books) => {
     books.forEach(book => {
-        let li = document.createElement('li')
-        li.setAttribute('class', 'book-card')
-        if(book['read']) {
-            li.style.background = 'teal'
-        }
-        Object.keys(book).forEach(key => {
-            if(key !== 'info' & key !== 'read') {
-                let element = document.createElement('p')
-                element.innerHTML = book[key]
-                li.appendChild(element)
+        let bookIndex = books.indexOf(book)
+        if(document.getElementById(bookIndex) === null) {
+            let bookCard = document.createElement('div')
+            bookCard.setAttribute('id', bookIndex)
+            bookCard.setAttribute('class', 'book-card')
+            bookCard.setAttribute('draggable', 'true')
+            bookCard.setAttribute('ondragstart', 'dragStart(event)')
+            Object.keys(book).forEach(key => {
+                if(key !== 'info' & key !== 'read') {
+                    let element = document.createElement('p')
+                    element.innerHTML = book[key]
+                    bookCard.appendChild(element)
+                }
+            })
+            if (book.read) {
+                bookCard.style.background = 'teal'
+                readBooks.appendChild(bookCard)
             }
-        })
-        bookCards.appendChild(li)
+            else{
+                unReadBooks.appendChild(bookCard)
+            }
+        }  
     })
 }
 
@@ -56,17 +67,21 @@ const secondBook = Book({
     read: false
 })
 
-addBookButton.addEventListener('click',e => {
-    addModal.style.display = "block";
+addUnReadBookButton.addEventListener('click',e => {
+    addModal.style.display = 'block'
+})
+
+addReadBookButton.addEventListener('click',e => {
+    addModal.style.display = 'block'
 })
 
 closeAddModalButton.addEventListener('click',e => {
-    addModal.style.display = "none";
+    addModal.style.display = 'none'
 })
 
 window.onclick = (event) => {
     if (event.target === addModal) {
-        addModal.style.display = "none";
+        addModal.style.display = 'none'
     }
 }
 
@@ -77,17 +92,48 @@ addBookForm.addEventListener('submit', e => {
     temp.pages = e.target[2].value
     temp.read = e.target[3].checked
     addBookToLibrary(Book(temp))
-    addModal.style.display = "none";
-    displayBooks(library.books)
+    addModal.style.display = 'none'
+    console.log(library.books)
+    updateLists(library.books)
     e.preventDefault()
 })
 
+allowDrop = (e) => {
+    e.preventDefault()
+}
+
+dragStart = (e) => {
+    e.dataTransfer.setData('text/plain', e.target.id)
+}
+
+dropIt = (e) => {
+    e.preventDefault()
+    let sourceId = e.dataTransfer.getData('text/plain')
+    let sourceIdEl = document.getElementById(sourceId)
+    let sourceIdParentEl = sourceIdEl.parentElement
+    let targetEl = e.target
+    let targetParentEl = targetEl.parentElement
+    if (targetParentEl.id !== sourceIdParentEl.id){
+        if (targetParentEl.className === sourceIdParentEl.className){
+            targetParentEl.appendChild(sourceIdEl)
+            if(targetParentEl.id === 'list1') {
+                sourceIdEl.style.background = 'tomato'
+            }
+            else {
+                sourceIdEl.style.background = 'teal'
+            }  
+        }
+        else if (sourceIdEl.className === targetParentEl.className) {
+            targetParentEl.insertAdjacentElement('beforebegin', sourceIdEl)
+            sourceIdEl.style.background = targetParentEl.style.background
+        }
+    }
+    else if (sourceIdEl.className === targetEl.className){
+        targetEl.insertAdjacentElement('beforebegin', sourceIdEl)
+        sourceIdEl.style.background = targetEl.style.background
+    }
+}
+
 addBookToLibrary(firstBook)
 addBookToLibrary(secondBook)
-
-displayBooks(library.books)
-
-console.log('First book:')
-console.log(firstBook.info())
-console.log('Second book:')
-console.log(secondBook.info())
+updateLists(library.books)

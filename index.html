@@ -8,7 +8,6 @@
 </head>
 <body>
     <header>Library</header>
-    <button class="add">+</button>
     <div class="add-modal">
         <div class="add-modal-content">
         	<span class="close">&times;</span>
@@ -23,7 +22,7 @@
     					<input type="text" id="author" name="author" />
 				    </li>
                     <li>
-	    				<label for="author">Pages:</label>
+	    				<label for="pages">Pages:</label>
     					<input type="number" id="pages" name="pages" />
 				    </li>
                     <li>
@@ -34,11 +33,19 @@
 					    <button type="submit">Add book</button>
 				    </li>
 			    </ul>
-		    </form>
+			</form>
         </div>
     </div>
-    <ul class="book-cards">
-    </ul>
+	<div id='booklists' class="book-lists">
+        <div id='list1' class="book-list" ondrop="dropIt(event)" ondragover="allowDrop(event)">
+        	<div id="title1" class="list-title">Not read</div>
+			<button id="add1" class="add">+ Add a book</button>
+        </div>
+        <div  id='list2' class="book-list" ondrop="dropIt(event)" ondragover="allowDrop(event)">
+        	<div id="title2" class="list-title">Read</div>
+			<button id="add2" class="add">+ Add a book</button>
+        </div>
+    </div>
     <script src="main.js"></script>
 </body>
 </html>
