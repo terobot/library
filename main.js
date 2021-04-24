@@ -1,4 +1,3 @@
-const bookCards = Array.from(document.getElementsByClassName('book-card'))
 const unReadBooks = document.getElementById('list1')
 const readBooks = document.getElementById('list2')
 const addUnReadBookButton = document.getElementById('add1')
@@ -27,11 +26,23 @@ const Book = (props) => {
 
 const addBookToLibrary = (book) => library.books.push(book)
 
+const removeCard = (index) => library.books.splice(index, 1)
+
 const updateLists = (books) => {
     books.forEach(book => {
         let bookIndex = books.indexOf(book)
         if(document.getElementById(bookIndex) === null) {
             let bookCard = document.createElement('div')
+            let removeButton = document.createElement('button')
+            let editButton = document.createElement('button')
+            removeButton.innerHTML = 'Remove'
+            removeButton.setAttribute('class', 'remove-button')
+            removeButton.addEventListener('click',e => {
+                removeCard(e.target.parentElement.id)
+                e.target.parentElement.remove()
+            })
+            editButton.innerHTML = 'Edit'
+            editButton.setAttribute('class', 'edit-button')
             bookCard.setAttribute('id', bookIndex)
             bookCard.setAttribute('class', 'book-card')
             bookCard.setAttribute('draggable', 'true')
@@ -43,6 +54,8 @@ const updateLists = (books) => {
                     bookCard.appendChild(element)
                 }
             })
+            bookCard.appendChild(removeButton)
+            bookCard.appendChild(editButton)
             if (book.read) {
                 bookCard.style.background = 'teal'
                 readBooks.appendChild(bookCard)
@@ -126,6 +139,15 @@ dropIt = (e) => {
         else if (sourceIdEl.className === targetParentEl.className) {
             targetParentEl.insertAdjacentElement('beforebegin', sourceIdEl)
             sourceIdEl.style.background = targetParentEl.style.background
+        }
+        else if (targetParentEl.className === 'book-lists') {
+            targetEl.appendChild(sourceIdEl)
+            if(targetEl.id === 'list1') {
+                sourceIdEl.style.background = 'tomato'
+            }
+            else {
+                sourceIdEl.style.background = 'teal'
+            } 
         }
     }
     else if (sourceIdEl.className === targetEl.className){

@@ -148,3 +148,35 @@ textarea {
 table {
     padding: 0;
 }
+
+.remove-button {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1em;
+    font-weight: bold;
+    text-align: center;
+    border-style: none;
+    background-color: transparent;
+    padding: 5px;
+}
+
+.remove-button:hover {
+    background:black;
+    color: seashell;
+    border-radius: 3px;
+}
+
+.edit-button {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1em;
+    font-weight: bold;
+    text-align: center;
+    border-style: none;
+    background-color: transparent;
+    padding: 5px;
+}
+
+.edit-button:hover {
+    background:black;
+    color: seashell;
+    border-radius: 3px;
+}
