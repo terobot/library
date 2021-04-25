@@ -68,10 +68,10 @@ const updateLists = (books) => {
         if(document.getElementById(bookIndex) === null) {
             let bookCard = createBookCard(book, bookIndex)
             if (book.read) {
-                readBooks.appendChild(bookCard)
+                readBooks.querySelector('button').insertAdjacentElement('afterend', bookCard)
             }
             else{
-                unReadBooks.appendChild(bookCard)
+                unReadBooks.querySelector('button').insertAdjacentElement('afterend', bookCard)
             }
         }  
     })
@@ -117,7 +117,6 @@ addReadBookButton.addEventListener('click',e => {
     addBookToLibrary(tempBook)
     let bookCard = createBookCard(library.books[library.books.length-1], library.books.length-1)
     e.target.insertAdjacentElement('afterend', bookCard)
-    console.log(library.books)
 })
 
 allowDrop = (e) => {
@@ -137,7 +136,8 @@ dropIt = (e) => {
     let targetParentEl = targetEl.parentElement
     if (targetParentEl.id !== sourceIdParentEl.id){
         if (targetParentEl.className === sourceIdParentEl.className){
-            targetParentEl.appendChild(sourceIdEl)
+            //targetParentEl.appendChild(sourceIdEl)
+            targetParentEl.querySelector('button').insertAdjacentElement('afterend', sourceIdEl)
             if(targetParentEl.id === 'list1') {
                 sourceIdEl.style.background = 'tomato'
             }
@@ -150,7 +150,8 @@ dropIt = (e) => {
             sourceIdEl.style.background = targetParentEl.style.background
         }
         else if (targetParentEl.className === 'book-lists') {
-            targetEl.appendChild(sourceIdEl)
+            //targetEl.appendChild(sourceIdEl)
+            targetEl.querySelector('button').insertAdjacentElement('afterend', sourceIdEl)
             if(targetEl.id === 'list1') {
                 sourceIdEl.style.background = 'tomato'
             }
