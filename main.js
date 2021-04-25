@@ -2,9 +2,6 @@ const unReadBooks = document.getElementById('list1')
 const readBooks = document.getElementById('list2')
 const addUnReadBookButton = document.getElementById('add1')
 const addReadBookButton = document.getElementById('add2')
-const addModal = document.getElementsByClassName('add-modal')[0]
-const closeAddModalButton = document.getElementsByClassName('close')[0]
-const addBookForm = document.getElementById('add-book')
 const library = []
 library.books = []
 
@@ -13,6 +10,7 @@ const Book = (props) => {
     const author = props.author
     const pages = props.pages
     const read = props.read
+    const id = props.id
     const info = () => {
         if(read) {
             return title + ' by ' + author + ', ' + pages + ' pages, read'
@@ -21,43 +19,55 @@ const Book = (props) => {
             return title + ' by ' + author + ', ' + pages + ' pages, not read yet'
         }
     }
-    return {title, author, pages, read, info}
+    return {title, author, pages, read, id, info}
 }
 
 const addBookToLibrary = (book) => library.books.push(book)
 
-const removeCard = (index) => library.books.splice(index, 1)
+const removeCard = (id) => {
+    let index = library.books.findIndex(book => book.id === id)
+    library.books.splice(index, 1)
+    console.log(library.books)
+}
+
+const createBookCard = (book, bookIndex) => {
+    let bookCard = document.createElement('div')
+    let removeButton = document.createElement('button')
+    let editButton = document.createElement('button')
+    removeButton.innerHTML = 'Remove'
+    removeButton.setAttribute('class', 'remove-button')
+    removeButton.addEventListener('click',e => {
+        removeCard(e.target.parentElement.id)
+        e.target.parentElement.remove()
+    })
+    editButton.innerHTML = 'Edit'
+    editButton.setAttribute('class', 'edit-button')
+    bookCard.setAttribute('id', bookIndex)
+    bookCard.setAttribute('class', 'book-card')
+    bookCard.setAttribute('draggable', 'true')
+    bookCard.setAttribute('ondragstart', 'dragStart(event)')
+    Object.keys(book).forEach(key => {
+        if(key !== 'info' & key !== 'read' & key !== 'id') {
+            let element = document.createElement('p')
+            element.innerHTML = book[key]
+            bookCard.appendChild(element)
+        }
+    })
+    bookCard.appendChild(removeButton)
+    bookCard.appendChild(editButton)
+    if (book.read) {
+        bookCard.style.background = 'teal'
+    }
+
+    return bookCard
+}
 
 const updateLists = (books) => {
     books.forEach(book => {
         let bookIndex = books.indexOf(book)
         if(document.getElementById(bookIndex) === null) {
-            let bookCard = document.createElement('div')
-            let removeButton = document.createElement('button')
-            let editButton = document.createElement('button')
-            removeButton.innerHTML = 'Remove'
-            removeButton.setAttribute('class', 'remove-button')
-            removeButton.addEventListener('click',e => {
-                removeCard(e.target.parentElement.id)
-                e.target.parentElement.remove()
-            })
-            editButton.innerHTML = 'Edit'
-            editButton.setAttribute('class', 'edit-button')
-            bookCard.setAttribute('id', bookIndex)
-            bookCard.setAttribute('class', 'book-card')
-            bookCard.setAttribute('draggable', 'true')
-            bookCard.setAttribute('ondragstart', 'dragStart(event)')
-            Object.keys(book).forEach(key => {
-                if(key !== 'info' & key !== 'read') {
-                    let element = document.createElement('p')
-                    element.innerHTML = book[key]
-                    bookCard.appendChild(element)
-                }
-            })
-            bookCard.appendChild(removeButton)
-            bookCard.appendChild(editButton)
+            let bookCard = createBookCard(book, bookIndex)
             if (book.read) {
-                bookCard.style.background = 'teal'
                 readBooks.appendChild(bookCard)
             }
             else{
@@ -71,44 +81,43 @@ const firstBook = Book({
     title: 'Zero to One',
     author: 'Peter Thiel',
     pages: 224,
-    read: true
+    read: true,
+    id: 0
 })
 const secondBook = Book({
     title: 'User Story Mapping',
     author: 'Jeff Patton',
     pages: 324,
-    read: false
+    read: false,
+    id: 1
 })
 
 addUnReadBookButton.addEventListener('click',e => {
-    addModal.style.display = 'block'
+    const tempBook = Book({
+        title: 'Title',
+        author: 'Author',
+        pages: 0,
+        read: false,
+        id: library.books.length
+    })
+    addBookToLibrary(tempBook)
+    console.log(library.books)
+    let bookCard = createBookCard(library.books[library.books.length-1], library.books.length-1)
+    e.target.insertAdjacentElement('afterend', bookCard)
 })
 
 addReadBookButton.addEventListener('click',e => {
-    addModal.style.display = 'block'
-})
-
-closeAddModalButton.addEventListener('click',e => {
-    addModal.style.display = 'none'
-})
-
-window.onclick = (event) => {
-    if (event.target === addModal) {
-        addModal.style.display = 'none'
-    }
-}
-
-addBookForm.addEventListener('submit', e => {
-    const temp = {}
-    temp.title = e.target[0].value
-    temp.author = e.target[1].value
-    temp.pages = e.target[2].value
-    temp.read = e.target[3].checked
-    addBookToLibrary(Book(temp))
-    addModal.style.display = 'none'
+    const tempBook = Book({
+        title: 'Title',
+        author: 'Author',
+        pages: 0,
+        read: true,
+        id: library.books.length
+    })
+    addBookToLibrary(tempBook)
+    let bookCard = createBookCard(library.books[library.books.length-1], library.books.length-1)
+    e.target.insertAdjacentElement('afterend', bookCard)
     console.log(library.books)
-    updateLists(library.books)
-    e.preventDefault()
 })
 
 allowDrop = (e) => {
