@@ -42,6 +42,9 @@ const createBookCard = (book, bookIndex) => {
     })
     editButton.innerHTML = 'Edit'
     editButton.setAttribute('class', 'edit-button')
+    editButton.addEventListener('click',e => {
+        editBookCard(e.target.parentElement)
+    })
     bookCard.setAttribute('id', bookIndex)
     bookCard.setAttribute('class', 'book-card')
     bookCard.setAttribute('draggable', 'true')
@@ -60,6 +63,16 @@ const createBookCard = (book, bookIndex) => {
     }
 
     return bookCard
+}
+
+const editBookCard = (bookCard) => {
+    const elements = Array.from(bookCard.getElementsByTagName('p'))
+    bookCard.innerHTML = `<form>
+        <input type="text" placeholder="Title" value="${elements[0].innerHTML}">
+        <input type="text" placeholder="Author" value="${elements[1].innerHTML}">
+        <input type="number" placeholder="0" value="${elements[2].innerHTML}">
+        <input type="submit" value="Save">
+    </form>`
 }
 
 const updateLists = (books) => {
@@ -94,29 +107,28 @@ const secondBook = Book({
 
 addUnReadBookButton.addEventListener('click',e => {
     const tempBook = Book({
-        title: 'Title',
-        author: 'Author',
-        pages: 0,
+        title: null,
+        author: null,
         read: false,
         id: library.books.length
     })
     addBookToLibrary(tempBook)
-    console.log(library.books)
     let bookCard = createBookCard(library.books[library.books.length-1], library.books.length-1)
     e.target.insertAdjacentElement('afterend', bookCard)
+    editBookCard(bookCard)
 })
 
 addReadBookButton.addEventListener('click',e => {
     const tempBook = Book({
-        title: 'Title',
-        author: 'Author',
-        pages: 0,
+        title: null,
+        author: null,
         read: true,
         id: library.books.length
     })
     addBookToLibrary(tempBook)
     let bookCard = createBookCard(library.books[library.books.length-1], library.books.length-1)
     e.target.insertAdjacentElement('afterend', bookCard)
+    editBookCard(bookCard)
 })
 
 allowDrop = (e) => {
@@ -136,7 +148,6 @@ dropIt = (e) => {
     let targetParentEl = targetEl.parentElement
     if (targetParentEl.id !== sourceIdParentEl.id){
         if (targetParentEl.className === sourceIdParentEl.className){
-            //targetParentEl.appendChild(sourceIdEl)
             targetParentEl.querySelector('button').insertAdjacentElement('afterend', sourceIdEl)
             if(targetParentEl.id === 'list1') {
                 sourceIdEl.style.background = 'tomato'
@@ -150,18 +161,21 @@ dropIt = (e) => {
             sourceIdEl.style.background = targetParentEl.style.background
         }
         else if (targetParentEl.className === 'book-lists') {
-            //targetEl.appendChild(sourceIdEl)
             targetEl.querySelector('button').insertAdjacentElement('afterend', sourceIdEl)
             if(targetEl.id === 'list1') {
                 sourceIdEl.style.background = 'tomato'
             }
             else {
                 sourceIdEl.style.background = 'teal'
-            } 
+            }
         }
     }
     else if (sourceIdEl.className === targetEl.className){
         targetEl.insertAdjacentElement('beforebegin', sourceIdEl)
+        sourceIdEl.style.background = targetEl.style.background
+    }
+    else if (sourceIdParentEl.className === targetParentEl.className){
+        targetParentEl.querySelector('button').insertAdjacentElement('afterend', sourceIdEl)
         sourceIdEl.style.background = targetEl.style.background
     }
 }

@@ -23,16 +23,16 @@ header {
 }
 
 .add:hover {
-    background-color: seashell;
-    color: black;
+    background-color: none;
+    color: seashell;
     border-radius: 3px;
 }
 
 .book-card {
     background: tomato;
     height: auto;
-    line-height: 15px;
-    color: white;
+    line-height: 5px;
+    color: seashell;
     font-weight: bold;
     font-size: 1em;
     text-align: left;
@@ -82,13 +82,11 @@ table {
     text-align: center;
     border-style: none;
     background-color: transparent;
-    padding: 5px;
 }
 
 .remove-button:hover {
-    background:black;
+    background:none;
     color: seashell;
-    border-radius: 3px;
 }
 
 .edit-button {
@@ -98,11 +96,9 @@ table {
     text-align: center;
     border-style: none;
     background-color: transparent;
-    padding: 5px;
 }
 
 .edit-button:hover {
-    background:black;
+    background: none;
     color: seashell;
-    border-radius: 3px;
 }
