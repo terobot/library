@@ -31,7 +31,7 @@ header {
 .book-card {
     background: tomato;
     height: auto;
-    line-height: 5px;
+    line-height: 10px;
     color: seashell;
     font-weight: bold;
     font-size: 1em;
@@ -101,4 +101,50 @@ table {
 .edit-button:hover {
     background: none;
     color: seashell;
+}
+
+form {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    inline-size: 100%;
+    flex-wrap: wrap;
+}
+
+input[type=text] {
+    padding: 5px;
+    border:0;
+    box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+    font-family:inherit;
+    font-size: inherit;
+    background: inherit;
+    color: inherit;
+}
+
+input[type=number] {
+    border:0;
+    box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+    font-family:inherit;
+    font-size: inherit;
+    background: inherit;
+    color: inherit;
+}
+
+input[type=submit] {
+    color: rgba(255, 255, 255, 0.5);
+    border:0;
+    font-family:inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    background: none;
+}
+
+input[type=submit]:hover {
+    color: seashell;
+}
+
+input::placeholder {
+    font-family:inherit;
+    font-size: inherit;
+    color: inherit;
 }

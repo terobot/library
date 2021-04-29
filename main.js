@@ -22,6 +22,19 @@ const Book = (props) => {
     return {title, author, pages, read, id, info}
 }
 
+const updateReadStatuses = (books) => {
+    books.forEach(book => {
+        let bookIndex = books.indexOf(book)
+        let card = document.getElementById(bookIndex)
+        if (card.parentElement.id === 'list1') {
+            book.read = false
+        }
+        else {
+            book.read = true
+        }
+    })
+}
+
 const addBookToLibrary = (book) => library.books.push(book)
 
 const removeCard = (id) => {
@@ -34,6 +47,7 @@ const createBookCard = (book, bookIndex) => {
     let bookCard = document.createElement('div')
     let removeButton = document.createElement('button')
     let editButton = document.createElement('button')
+    let elements = []
     removeButton.innerHTML = 'Remove'
     removeButton.setAttribute('class', 'remove-button')
     removeButton.addEventListener('click',e => {
@@ -54,25 +68,51 @@ const createBookCard = (book, bookIndex) => {
             let element = document.createElement('p')
             element.innerHTML = book[key]
             bookCard.appendChild(element)
+            elements.push(element)
         }
     })
+    bookCard.innerHTML += bookForm(elements)
     bookCard.appendChild(removeButton)
     bookCard.appendChild(editButton)
     if (book.read) {
         bookCard.style.background = 'teal'
-    }
+    }    
 
     return bookCard
 }
 
-const editBookCard = (bookCard) => {
-    const elements = Array.from(bookCard.getElementsByTagName('p'))
-    bookCard.innerHTML = `<form>
+const bookForm = (elements) => {
+    return `<form>
         <input type="text" placeholder="Title" value="${elements[0].innerHTML}">
         <input type="text" placeholder="Author" value="${elements[1].innerHTML}">
         <input type="number" placeholder="0" value="${elements[2].innerHTML}">
         <input type="submit" value="Save">
     </form>`
+}
+
+const editBookCard = (bookCard) => {
+    let cardContents = Array.from(bookCard.getElementsByTagName('p'))
+    let form = bookCard.getElementsByTagName('form')[0]
+    cardContents.forEach(e => {
+        e.style.display = 'none'
+    })
+    bookCard.getElementsByTagName('button')[1].style.visibility = 'hidden'
+    form.style.display = 'inline-flex'    
+    form.addEventListener('submit', e => {
+        e.preventDefault()
+        let id = e.target.parentElement.id
+        library.books[id].title = e.target.elements[0].value
+        library.books[id].author = e.target.elements[1].value
+        library.books[id].pages = e.target.elements[2].value
+        e.target.style.display = 'none'
+        e.target.parentElement.getElementsByTagName('button')[1].style.visibility = 'inherit'
+        Array.from(e.target.parentElement.getElementsByTagName('p')).forEach(e => {
+            e.style.display = 'inherit'
+        })
+        e.target.parentElement.getElementsByTagName('p')[0].innerHTML = library.books[id].title
+        e.target.parentElement.getElementsByTagName('p')[1].innerHTML = library.books[id].author
+        e.target.parentElement.getElementsByTagName('p')[2].innerHTML = library.books[id].pages
+    })
 }
 
 const updateLists = (books) => {
@@ -109,6 +149,7 @@ addUnReadBookButton.addEventListener('click',e => {
     const tempBook = Book({
         title: null,
         author: null,
+        pages: null,
         read: false,
         id: library.books.length
     })
@@ -122,6 +163,7 @@ addReadBookButton.addEventListener('click',e => {
     const tempBook = Book({
         title: null,
         author: null,
+        pages: null,
         read: true,
         id: library.books.length
     })
@@ -178,6 +220,7 @@ dropIt = (e) => {
         targetParentEl.querySelector('button').insertAdjacentElement('afterend', sourceIdEl)
         sourceIdEl.style.background = targetEl.style.background
     }
+    updateReadStatuses(library.books)
 }
 
 addBookToLibrary(firstBook)
