@@ -130,21 +130,6 @@ const updateLists = (books) => {
     })
 }
 
-const firstBook = Book({
-    title: 'Zero to One',
-    author: 'Peter Thiel',
-    pages: 224,
-    read: true,
-    id: 0
-})
-const secondBook = Book({
-    title: 'User Story Mapping',
-    author: 'Jeff Patton',
-    pages: 324,
-    read: false,
-    id: 1
-})
-
 addUnReadBookButton.addEventListener('click',e => {
     const tempBook = Book({
         title: null,
@@ -222,7 +207,3 @@ dropIt = (e) => {
     }
     updateReadStatuses(library.books)
 }
-
-addBookToLibrary(firstBook)
-addBookToLibrary(secondBook)
-updateLists(library.books)
