@@ -4,6 +4,12 @@ const addUnReadBookButton = document.getElementById('add1')
 const addReadBookButton = document.getElementById('add2')
 const library = []
 library.books = []
+if(!localStorage.getItem('books')) {
+    localStorage.setItem('books', library.books)
+}
+else {
+    library.books = JSON.parse(localStorage.getItem('books'))
+}
 
 const Book = (props) => {
     const title = props.title
@@ -33,14 +39,18 @@ const updateReadStatuses = (books) => {
             book.read = true
         }
     })
+    localStorage.setItem('books', JSON.stringify(books))
 }
 
-const addBookToLibrary = (book) => library.books.push(book)
+const addBookToLibrary = (book) => {
+    library.books.push(book)
+    localStorage.setItem('books', JSON.stringify(library.books))
+}
 
 const removeCard = (id) => {
     let index = library.books.findIndex(book => book.id === id)
     library.books.splice(index, 1)
-    console.log(library.books)
+    localStorage.setItem('books', JSON.stringify(library.books))
 }
 
 const createBookCard = (book, bookIndex) => {
@@ -104,6 +114,7 @@ const editBookCard = (bookCard) => {
         library.books[id].title = e.target.elements[0].value
         library.books[id].author = e.target.elements[1].value
         library.books[id].pages = e.target.elements[2].value
+        localStorage.setItem('books', JSON.stringify(library.books))
         e.target.style.display = 'none'
         e.target.parentElement.getElementsByTagName('button')[1].style.visibility = 'inherit'
         Array.from(e.target.parentElement.getElementsByTagName('p')).forEach(e => {
@@ -207,3 +218,5 @@ dropIt = (e) => {
     }
     updateReadStatuses(library.books)
 }
+
+updateLists(library.books)
